@@ -1,23 +1,24 @@
 #List of required packages: UNCOMMENT and RUN for first time execution
-install.packages("devtools")
-library(devtools)
-install.packages("shiny")
-install.packages("shinydashboard")
-install.packages("RColorBrewer")
-install.packages("rgdal")
-install.packages("leaflet")
-install.packages("tidyverse")
-install.packages("treemap")
-install.packages("d3Tree")
-install_github("timelyportfolio/d3treeR")
-install.packages("fmsb")
-install.packages("plotly")
-install_github("timelyportfolio/parcoords")
-install.packages("geofacet")
-install.packages("Hmisc")
-install.packages("formattable")
-install.packages("reshape2")
+# install.packages("devtools")
+# install.packages("shiny")
+# install.packages("shinydashboard")
+# install.packages("RColorBrewer")
+# install.packages("rgdal")
+# install.packages("leaflet")
+# install.packages("tidyverse")
+# install.packages("treemap")
+# install.packages("d3Tree")
+# install_github("timelyportfolio/d3treeR")
+# install.packages("fmsb")
+# install.packages("plotly")
+# install_github("timelyportfolio/parcoords")
+# install.packages("geofacet")
+# install.packages("Hmisc")
+# install.packages("formattable")
+# install.packages("reshape2")
+# install.packages("raster")
 
+require(devtools)
 require(shiny)
 require(shinydashboard)
 require(RColorBrewer)
@@ -37,11 +38,6 @@ require(reshape2)
 
 
 #---------------------------------------Data Preparation & Global Variable Creation----------------------------------------
-
-#Set working directories, read datasets & add viz-based columns
-# setwd("C:/Users/Angad Srivastava/Desktop/VP/GlobalWarmingApp")
-
-
 #Read the datasets into the application
 geofacet.Dataset <- read.csv("Datasets/TemperatureForecastPlot.csv")
 consolidated.Dataset <- read.csv("Datasets/FinalStandardisedData.csv")
@@ -179,12 +175,7 @@ The datatable below shows the deviation in average temperature to highlight the 
 
 
 #Downloading shape files for Map
-url <- "http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries.zip"
-tmp <- tempdir()
-file <- basename(url)
-download.file(url, file)
-unzip("ne_50m_admin_0_countries.zip", exdir = tmp)
-countries <- readOGR(dsn = tmp,
+countries <- readOGR(dsn = "Datasets",
                      layer = "ne_50m_admin_0_countries",
                      encoding = "UTF-8",
                      verbose = FALSE)
@@ -370,7 +361,7 @@ server <- function( input, output, session ){
     #reference: https://rpubs.com/walkerke/wdi_legend
     mapped.Countries <- merge(countries, 
                               selected.WorldMapData(),
-                              by.x = "iso_a3", 
+                              by.x = "ISO_A3", 
                               by.y = "Country.Code",                    
                               sort = FALSE)
     pal <- colorQuantile("Reds", NULL, n = 9)
